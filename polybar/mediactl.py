@@ -112,10 +112,10 @@ def printStatus(count = -1):
             ppos = ['─'] * 10
             ppos[int(pos * 10 / length)] = '|'
             ppos = "".join(ppos)
-            spos = "%{F#0f0}" + minsec(pos) + "%{F-} / %{F#F00}" + minsec(length) + "%{F-}"
+            spos = "%{F#0f0}" + minsec(pos) + "%{F-} / %{F#fa8148}" + minsec(length) + "%{F-}"
 
 
-            print("%{F#f00}" + emojis.get(status, "") + "%{F-}", title[:20], spos, cmd)#, "%{T2}" + ppos + "%{T-}")
+            print("%{F#f00}" + emojis.get(status, "") + "%{F-}", title[:30], spos, cmd)#, "%{T2}" + ppos + "%{T-}")
             sys.stdout.flush()
         except Exception as e:
             debugPrint(f"Exception {e} [{media}, {mediaobj}, {status}]", file=sys.stderr)
