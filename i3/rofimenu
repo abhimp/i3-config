@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+export SHELL=/bin/bash
+export PATH=/home/abhijit/.bin/:$PATH
+rofi -theme sidetab  -icon-theme "Papirus" -show-icons -font sans-serif\ 16 -show run

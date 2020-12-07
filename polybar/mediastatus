@@ -1,0 +1,61 @@
+#!/bin/bash
+
+tried_starting_something=false
+
+while true
+do
+    first_matching_destination=$(dbus-send \
+                                     --session \
+                                     --dest=org.freedesktop.DBus \
+                                     --print-reply \
+                                     /org/freedesktop/DBus \
+                                     org.freedesktop.DBus.ListNames | \
+                                        fgrep org.mpris.MediaPlayer2. | \
+                                        head -1 | \
+                                        awk '{print $2}' | \
+                                        sed -e 's:"::g' )
+    #echo first_matching_destination $first_matching_destination
+
+    if [ -n "$first_matching_destination" ]
+    then
+        break
+    fi
+
+    if [ $tried_starting_something = true ]
+    then
+        echo "Couldn't start a media player." >&2
+        echo ""
+        exit 1
+    fi
+
+
+    tried_starting_something=true
+    echo ""
+    exit 1
+done
+
+status=`dbus-send --print-reply --dest=$first_matching_destination /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus'|egrep -A 1 "string"|cut -b 26-|cut -d '"' -f 1|egrep -v ^$`
+artist=`dbus-send --print-reply --dest=$first_matching_destination /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'|egrep -A 2 "artist"|egrep -v "artist"|egrep -v "array"|cut -b 27-|cut -d '"' -f 1|egrep -v ^$`
+album=`dbus-send --print-reply --dest=$first_matching_destination /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'|egrep -A 1 "album"|egrep -v "album"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$`
+title=`dbus-send --print-reply --dest=$first_matching_destination /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'|egrep -A 1 "title"|egrep -v "title"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$`
+
+estat=
+case $status in
+    Playing)
+        estat=
+        ;;
+    Paused)
+        estat=
+        ;;
+    Stopped)
+        estat=
+        ;;
+    *)
+        estat=""
+        ;;
+esac
+
+playing="$title $album $artist"
+playing=${playing:0:20}
+
+echo $estat $playing
