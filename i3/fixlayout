@@ -1,5 +1,9 @@
 #!/bin/bash
 hdmi_active=$(xrandr |grep ' connected' |grep 'HDMI' |awk '{print $1}')
+for x in 1 2 3 4
+do
+    xrandr --delmonitor eDP-1-$x
+done
 if [[ ! -z "$hdmi_active" ]]
 then
     xrandr --output HDMI-1 --mode 1440x900 --pos 1920x0 --rotate right --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal

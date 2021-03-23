@@ -201,7 +201,7 @@ mode "resize" {
 
 bindsym $mod+Shift+r mode "resize"
 
-bindsym $mod+m exec polybar-msg cmd toggle
+# bindsym $mod+Shift+m exec polybar-msg cmd toggle
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -256,12 +256,15 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym Shift+XF86AudioMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym $mod+Shift+m exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 5%- && $refresh_i3status
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s 5%+ && $refresh_i3status
 bindsym --release Print exec --no-startup-id scrot "$uhome/Pictures/screenshot/screen-$(date +%Y%m%d%H%M%S).png"
 bindsym --release $mod+Print exec --no-startup-id scrot -u "$uhome/Pictures/screenshot/screen-$(date +%Y%m%d%H%M%S).png"
 bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s "$uhome/Pictures/screenshot/screen-$(date +%Y%m%d%H%M%S).png"
 bindsym --release $mod+m exec --no-startup-id bash $i3confdir/unmuteheadset.sh
+bindsym --release $mod+p exec --no-startup-id bash ~/.config/polybar/relaunch.sh
 
 # *****************************************************
 # *  xss-lock to lock automatically                   *

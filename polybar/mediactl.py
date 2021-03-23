@@ -16,23 +16,64 @@ DEBUG = False
 if "MEDIA_CTL" in os.environ:
     DEBUG = True
 
+def deamonize():
+    pid = os.fork()
+
+    if pid < 0:
+        exit(-1)
+
+    if pid != 0:
+        exit(0)
+
+
+    pid = os.fork()
+
+    if pid < 0:
+        exit(-1)
+
+    if pid != 0:
+        exit(0)
+
+def getMediaObj():
+    media = None
+
+    vlc = None
+    rhythmbox = None
+
+    for x in remote_object.ListNames():
+        if x.startswith("org.mpris.MediaPlayer2."):
+            if media is None:
+                media=x
+            y = x.lower()
+            if 'vlc' in y:
+                vlc = x
+            elif 'rhythmbox' in y:
+                rhythmbox = x
+
+    if vlc is not None:
+        media = vlc
+    if rhythmbox is not None:
+        media = rhythmbox
+
+    if media is None:
+        return None
+
+    try:
+        mediaobj = bus.get(media, "/org/mpris/MediaPlayer2")
+        return mediaobj
+    except:
+        return None
+
 def debugPrint(*a, **b):
     if not DEBUG:
         return
     print(*a, **b)
 
 def runCmd():
-    media = None
-
-    for x in remote_object.ListNames():
-        if x.startswith("org.mpris.MediaPlayer2."):
-            media=x
-            break
-    if media is None:
-        print("")
+    #deamonize()
+    mediaobj = getMediaObj()
+    if mediaobj is None:
         exit(1)
-
-    mediaobj = bus.get(media, "/org/mpris/MediaPlayer2")
     command = sys.argv[1]
     if command == "PlayPause":
         mediaobj.PlayPause ()
@@ -59,7 +100,6 @@ def minsec(us):
     return f"{m}:{sec:02d}"
 
 def printStatus(count = -1):
-    media = None
     mediaobj = None
     cmd = "  %{A1:python "+sys.argv[0]+" Previous:}%{F#ff0}"+chr(0xe054)+"%{F-}%{A}"
     cmd += " | " + "%{A1:python "+sys.argv[0]+" PlayPause:}%{F#f0}"+chr(0xe058)+chr(0xe059)+"%{F-}%{A}"
@@ -76,19 +116,12 @@ def printStatus(count = -1):
             break
         if count > 0:
             count -= 1
-        if media is None:
-            for x in remote_object.ListNames():
-                if x.startswith("org.mpris.MediaPlayer2."):
-                    media=x
-                    break
-            if media is None:
-                debugPrint("media is None", file=sys.stderr)
-                continue
         if mediaobj is None:
-            mediaobj = bus.get(media, "/org/mpris/MediaPlayer2")
+            mediaobj = getMediaObj()
         if mediaobj is None:
-            debugPrint("mediaobj is None", file=sys.stderr)
-            media = None
+            debugPrint("da")
+            print("")
+            sys.stdout.flush()
             continue
 
         try:
@@ -118,8 +151,7 @@ def printStatus(count = -1):
             print("%{F#f00}" + emojis.get(status, "") + "%{F-}", title[:30], spos, cmd)#, "%{T2}" + ppos + "%{T-}")
             sys.stdout.flush()
         except Exception as e:
-            debugPrint(f"Exception {e} [{media}, {mediaobj}, {status}]", file=sys.stderr)
-            media = None
+            debugPrint(f"Exception {e} [{mediaobj}, {status}]", file=sys.stderr)
             mediaobj = None
             print("")
             sys.stdout.flush()

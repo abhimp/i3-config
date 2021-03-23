@@ -13,6 +13,13 @@
 #
 # echo "Polybar launched..."
 
+cnt=$(ps -ef | grep `pgrep polybar` | grep defunct | wc -l)
+
+if [ $cnt -eq 0 ]
+then
+    exit
+fi
+
 #
 # Terminate already running bar instances
 killall -q polybar

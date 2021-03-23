@@ -53,10 +53,12 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = fixed:pixelsize=10;1
+;;font-0 = fixed:pixelsize=10;1
+font-0 = "Noto Sans:size=10;1"
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 font-3 = "NotoEmoji:scale=10"
+;font-4 = "Noto Sans:size=10;1"
 
 ;;modules-left = bspwm i3
 ;;modules-center = date
@@ -87,7 +89,8 @@ cursor-scroll =
 inherit = bar/base
 background = ${colors.background-trans}
 override-redirect = false
-modules-left = i3 music
+; modules-left = i3 mictest fixscreen splitscreen autorecord music
+modules-left = i3 mictest fixscreen splitscreen music
 modules-center = date
 modules-right = backlight-acpi pulseaudio wlan eth battery temperature logout powermenu
 
@@ -202,7 +205,7 @@ label-unfocused-background = ${colors.background}
 ; visible = Active workspace on unfocused monitor
 label-visible = %index%
 label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
+label-visible-underline = ${colors.red}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
@@ -383,7 +386,7 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 type = internal/battery
 battery = BAT0
 adapter = ADP1
-full-at = 98
+full-at = 99
 
 format-charging = <animation-charging> <label-charging>
 format-charging-underline = #ffb52a
@@ -504,12 +507,12 @@ format-padding = 2
 #expand-right = true
 
 menu-0-0 = 
-menu-0-0-exec = "/home/abhijit/.config/polybar/mediactl Previous"
+menu-0-0-exec = "/home/abhijit/.config/polybar/mediactl.py Previous"
 menu-0-1 = 
-menu-0-1-exec = "/home/abhijit/.config/polybar/mediactl Next"
+menu-0-1-exec = "/home/abhijit/.config/polybar/mediactl.py Next"
 
 menu-0-2 = 
-menu-0-2-exec = "/home/abhijit/.config/polybar/mediactl PlayPause"
+menu-0-2-exec = "/home/abhijit/.config/polybar/mediactl.py PlayPause"
 
 label-open = 
 label-close = x
@@ -519,16 +522,48 @@ label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
 [module/music]
-type=custom/script
-exec=/home/abhijit/.config/polybar/mediactl.py
-format-font=1
-tail=true
+type = custom/script
+exec = /home/abhijit/.config/polybar/mediactl.py
+#format-font = 5
+tail = true
 
 click-left = "/home/abhijit/.config/polybar/mediactl.py PlayPause"
 #click-right = "/home/abhijit/.config/polybar/mediactl.py Next"
 #click-middle = "/home/abhijit/.config/polybar/mediactl.py Previous"
 scroll-up = "/home/abhijit/.config/polybar/mediactl.py Seek %counter%"
 scroll-down = "/home/abhijit/.config/polybar/mediactl.py Seek  -%counter%"
+
+[module/mictest]
+type = custom/script
+exec = /home/abhijit/.config/polybar/micstatus.py
+tail = true
+
+;format-underline = #ffb52a
+
+click-left = "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+scroll-up = pactl set-source-volume @DEFAULT_SOURCE@ +10%
+scroll-down = pactl set-source-volume @DEFAULT_SOURCE@ -10%
+
+[module/splitscreen]
+type = custom/text
+content = 3S
+
+click-left=/home/abhijit/.config/i3/splitscreen
+
+[module/fixscreen]
+type = custom/text
+content = 1S
+
+click-left = /home/abhijit/.config/i3/fixlayout
+
+[module/autorecord]
+type = custom/script
+exec = /home/abhijit/.config/polybar/recstat.sh
+tail = true
+
+click-left = kill -USR1 %pid%
+click-right = kill -USR2 %pid%
+
 
 [settings]
 screenchange-reload = true
@@ -540,6 +575,7 @@ screenchange-reload = true
 format-background = ${colors.background}
 format-padding = 5
 format-spacing = 2
+#format-font = 5
 
 [global/wm]
 margin-top = 5
