@@ -8,5 +8,5 @@ sudo pacman --color=always --overwrite "*" --sync --asdeps python-sphinx cmake j
 python -m pikaur -S polybar
 python -m pikaur -S ttf-unifont siji-git xorg-fonts-misc
 
-ln -sf ~/.config/polybar $PWD/polybar
+ln -sf $PWD/polybar ~/.config/polybar
 
