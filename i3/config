@@ -55,7 +55,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- $i3confdir/i3lock.sh --no
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id pasystray
-exec --no-startup-id "feh --bg-fill $(find $uhome/Pictures/Wallpaper/bingimage/ -type f | shuf -n 1) $(find $uhome/Pictures/Wallpaper/hd-v/ -type f | shuf -n 1)"
+exec --no-startup-id "feh --bg-fill $(find $uhome/Pictures/Wallpaper/bingimage/ -type f | shuf -n 1) $(find $uhome/Pictures/Wallpaper/bingimage/ -type f | shuf -n 1)"
 exec --no-startup-id $uhome/.dropbox-dist/dropboxd &
 exec --no-startup-id "megasync &"
 exec --no-startup-id xcompmgr -c -f -n
@@ -239,7 +239,7 @@ gaps inner 2
 gaps outer 1
 
 
-bindsym $alt+Shift+w exec "feh --bg-fill $(find $uhome/Pictures/Wallpaper/bingimage/ -type f | shuf -n 1) $(find $uhome/Pictures/Wallpaper/hd-v/ -type f | shuf -n 1)"
+bindsym $alt+Shift+w exec "feh --bg-fill $(find $uhome/Pictures/Wallpaper/bingimage/ -type f | shuf -n 1) $(find $uhome/Pictures/Wallpaper/bingimage/ -type f | shuf -n 1)"
 bindsym $alt+Control+l exec $i3confdir/i3lock.sh
 
 bindsym $alt+Control+Shift+Left move workspace to output left

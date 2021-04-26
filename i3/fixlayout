@@ -6,7 +6,8 @@ do
 done
 if [[ ! -z "$hdmi_active" ]]
 then
-    xrandr --output HDMI-1 --mode 1440x900 --pos 1920x0 --rotate right --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal
+    xrandr --output HDMI-1 --mode 1920x1080 --pos 1920x0 --rotate normal --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal
 else
     xrandr --output HDMI-1 --off --output eDP-1 --primary --mode 1920x1080 --scale 1x1 --pos 0x0 --rotate normal
 fi
+

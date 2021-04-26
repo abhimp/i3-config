@@ -86,6 +86,7 @@ cursor-scroll =
 ;override-redirect = true
 
 [bar/full]
+monitor = ${env:MONITOR:}
 inherit = bar/base
 background = ${colors.background-trans}
 override-redirect = false
@@ -94,7 +95,7 @@ modules-left = i3 mictest fixscreen splitscreen music
 modules-center = date
 modules-right = backlight-acpi pulseaudio wlan eth battery temperature logout powermenu
 
-tray-position = right
+tray-position = ${env:TRAY_POS:fallback right}
 tray-padding = 5
 tray-background = ${colors.background}
 
@@ -185,7 +186,7 @@ format-padding = 0
 
 
 ; Only show workspaces on the same output as the bar
-;pin-workspaces = true
+pin-workspaces = true
 
 label-mode-padding = 2
 label-mode-foreground = #000
