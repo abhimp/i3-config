@@ -2,7 +2,7 @@
 
 install="sudo pacman -S"
 
-$install xss-lock xorg-xrandr xorg-xfd brightnessctl scrot i3-gaps i3status pasystray feh rofi libpulse
+$install xss-lock xorg-xrandr xorg-xfd brightnessctl scrot i3-gaps i3status pasystray feh rofi libpulse gnome-keyring i3lock imagemagick
 
 pip install pikaur pyalpm i3ipc
 
