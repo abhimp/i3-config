@@ -91,7 +91,7 @@ inherit = bar/base
 background = ${colors.background-trans}
 override-redirect = false
 ; modules-left = i3 mictest fixscreen splitscreen autorecord music
-modules-left = i3 mictest fixscreen splitscreen music
+modules-left = i3 mictest togglehdmi music
 modules-center = date
 modules-right = backlight-acpi pulseaudio wlan eth battery temperature logout powermenu
 
@@ -556,6 +556,14 @@ type = custom/text
 content = 1S
 
 click-left = /home/abhijit/.config/i3/fixlayout
+
+[module/togglehdmi]
+type = custom/text
+content = 
+format-font = 1
+
+click-left = /home/abhijit/.config/polybar/togglehdmi.sh
+
 
 [module/autorecord]
 type = custom/script
